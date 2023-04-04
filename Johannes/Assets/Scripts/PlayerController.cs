@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
     float speed = 3;
     float jumpHeight = 5;
-
+    
     void Start() {
         tran = GetComponent<Transform>();
         cameraTran = tran.Find("CameraCenter");
