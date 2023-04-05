@@ -18,11 +18,8 @@ public class Puzzle1 : MonoBehaviour
     {
         if (triggered)
         {
-            float H, S, V;
-            Color.RGBToHSV(collider.gameObject.GetComponent<Renderer>().material.GetColor("_Color"), out H, out S, out V);
-            collider.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.HSVToRGB(H, 1, V));
-            Color.RGBToHSV(this.gameObject.GetComponent<Renderer>().material.GetColor("_Color"), out H, out S, out V);
-            this.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.HSVToRGB(H, 1, V));
+            FindObjectOfType<FadeToGray>().DoTheColor(this.gameObject.GetComponent<Renderer>());
+            FindObjectOfType<FadeToGray>().DoTheColor(collider.gameObject.GetComponent<Renderer>());
         }
     }
     private void OnTriggerEnter(Collider col)
@@ -54,9 +51,7 @@ public class Puzzle1 : MonoBehaviour
 
             triggered = false;
 
-            float H, S, V;
-            Color.RGBToHSV(this.gameObject.GetComponent<Renderer>().material.GetColor("_Color"), out H, out S, out V);
-            this.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.HSVToRGB(H, 1, V));
+            FindObjectOfType<FadeToGray>().DoTheFade(this.gameObject.GetComponent<Renderer>());
         }
     }
 }
