@@ -35,6 +35,12 @@ public class Puzzle1 : MonoBehaviour
             collider = col;
             triggered = true;
             FindObjectOfType<ChangeColor>().ColorAllPuzzles();
+            foreach(ChangeSky obj in FindObjectsOfTypeAll(typeof(ChangeSky)))
+            {
+                obj.ColorSky();
+            }
+            RenderSettings.fog = false;
+            //FindObjectOfType<ChangeSky>().ColorSky();
         }
     }
     private void OnTriggerExit(Collider col)
