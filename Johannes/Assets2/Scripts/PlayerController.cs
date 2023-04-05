@@ -52,8 +52,6 @@ public class PlayerController : MonoBehaviour
 
         bool grounded = Physics.Raycast(feet.position, Vector3.down, 0.5f, mask);
         bool jump = false;
-        if (grounded) Debug.Log("I'm grounded");
-        else Debug.Log("I'm not grounded");
         if (gameObject.tag == "Player1") jump = Input.GetButtonDown("JumpJoy");
         else if (gameObject.tag == "Player2") jump = Input.GetButtonDown("Jump");
         if (grounded && jump) {

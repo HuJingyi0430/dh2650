@@ -32,10 +32,9 @@ public class Puzzle1 : MonoBehaviour
 
         if (col.gameObject.tag == this.gameObject.tag)
         {
-
-            Debug.Log("Hello there my darling");
             collider = col;
             triggered = true;
+            FindObjectOfType<ChangeColor>().ColorAllPuzzles();
         }
     }
     private void OnTriggerExit(Collider col)
