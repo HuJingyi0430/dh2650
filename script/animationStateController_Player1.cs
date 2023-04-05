@@ -5,9 +5,11 @@ using UnityEngine;
 public class animationStateController_Player1 : MonoBehaviour
 {
     Animator animator;
+    bool grabbing;
     // Start is called before the first frame update
     void Start()
     {
+        grabbing = false;
         animator = GetComponent<Animator>();
     }
 
@@ -22,7 +24,7 @@ public class animationStateController_Player1 : MonoBehaviour
                 animator.SetBool("isJumping", true);
 
             }
-            else if (Input.GetButton("GrabJoy"))
+            else if (grabbing)
             {
                 animator.SetBool("isWalking", false);
                 animator.SetBool("isGrabbing", true);
@@ -36,10 +38,20 @@ public class animationStateController_Player1 : MonoBehaviour
         }
         else animator.SetBool("isWalking", false);
         
-        if (Input.GetButton("GrabJoy") == true) animator.SetBool("isGrabbing", true);
+        if (grabbing) animator.SetBool("isGrabbing", true);
         else animator.SetBool("isGrabbing", false);
 
         if (Input.GetButtonDown("JumpJoy")) animator.SetBool("isJumping", true);
         else animator.SetBool("isJumping", false);
+    }
+
+    public void Grab()
+    {
+        grabbing = true;
+        Debug.Log("IS GRABBING");
+    }
+    public void StopGrab()
+    {
+        grabbing = false;
     }
 }

@@ -8,9 +8,11 @@ public class MoveAbility : MonoBehaviour
     private bool colliding;
     private Collision collated_object;
     Vector3 distance;
+    animationStateController_Player1 animation;
     // Start is called before the first frame update
     void Start()
     {
+        animation = FindObjectOfType<animationStateController_Player1>();
         m_Rigidbody = GetComponent<Rigidbody>();
         colliding = false;
         collated_object = null;
@@ -21,14 +23,13 @@ public class MoveAbility : MonoBehaviour
     {
         if (colliding)
         {
-            if((collated_object.rigidbody.position-m_Rigidbody.position).magnitude <= (distance.magnitude + 0.5f))
+            if((collated_object.rigidbody.position-m_Rigidbody.position).magnitude <= (distance.magnitude + 0.2f))
             {
-                if ( Input.GetButton("GrabJoy") && collated_object != null)
-                {
-                    collated_object.rigidbody.MovePosition(m_Rigidbody.position + (distance * 1.1f));
-                }
+                // if ( Input.GetButton("GrabJoy") && collated_object != null) collated_object.rigidbody.MovePosition(m_Rigidbody.position + (distance * 1.1f));
+                animation.Grab();
             } else { 
                 colliding = false;
+                animation.StopGrab();
             }
         }
     }
@@ -40,6 +41,7 @@ public class MoveAbility : MonoBehaviour
         if (collision.gameObject.name == "Box")
         {
             Debug.Log("COLLISION WITH BOX!");
+   
             collated_object = collision; // Set global variable
             colliding = true; // Activate condition
             distance = (collision.rigidbody.position-m_Rigidbody.position); // Calculate distance to collided object
