@@ -31,7 +31,11 @@ public class Cable : MonoBehaviour
         if (this.CompareTag("FinishCable") && !on)
         {
             counter++;
-            if (counter == 3) FindObjectOfType<ShutDownLab>().ShutDown();
+            if (counter == 3)
+            {
+                FindObjectOfType<ShutDownLab>().ShutDown();
+                FindObjectOfType<ChangeColor>().ColorPuzzle("PuzzleArea2");
+            }
         }
     }
 

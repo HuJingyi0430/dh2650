@@ -19,7 +19,6 @@ public class ShutDownLab : MonoBehaviour
     // Update is called once per frame
     public void ShutDown()
     {
-
         Debug.Log("FINISHED THE PUZZLE");
         window1.GetComponent<Renderer>().material.color = new Color(1, 1, 1);
         window2.GetComponent<Renderer>().material.color = new Color(1, 1, 1);
