@@ -16,8 +16,10 @@ public class animationStateController_Player1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetAxis("HorizontalJoyLeft") != 0 || Input.GetAxis("VerticalJoyLeft") != 0)
-        {
+        
+        //if(Input.GetAxis("HorizontalJoyLeft") != 0 || Input.GetAxis("VerticalJoyLeft") != 0)
+        if (Input.GetAxis("Horizontal2") != 0 || Input.GetAxis("Vertical2") != 0)
+         {
             if (Input.GetButtonDown("JumpJoy"))
             {
                 animator.SetBool("isWalking", false);

@@ -30,8 +30,8 @@ public class PlayerController : MonoBehaviour
         float horizontal = 0;
         float vertical = 0;
         if (gameObject.tag == "Player1") {
-            horizontal = Input.GetAxis("HorizontalJoyLeft");
-            vertical = Input.GetAxis("VerticalJoyLeft");
+            horizontal = Input.GetAxis("Horizontal2"); // HorizontalJoyLeft
+            vertical = Input.GetAxis("Vertical2"); //VerticalJoyLeft
         }
         else if (gameObject.tag == "Player2") {
             horizontal = Input.GetAxis("Horizontal");
