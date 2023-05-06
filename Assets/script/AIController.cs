@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+//using System.Numerics;
 //using System.Numerics;
 using UnityEngine;
 using UnityEngine.AI;
@@ -8,8 +10,9 @@ public class AIController : MonoBehaviour
     public NavMeshAgent navMeshAgent;               //  Nav mesh agent component
     public float startWaitTime = 4;                 //  Wait time of every action
     public float timeToRotate = 2;                  //  Wait time when the enemy detect near the player without seeing
-    public float speedWalk = 5;                     //  Walking speed, speed in the nav mesh agent
-    public float speedRun = 9;                      //  Running speed
+    public float speedWalk = 7;                     //  Walking speed, speed in the nav mesh agent
+    public float speedRun = 10;                      //  Running speed
+    public float speedStand = 0;                    //  Standing speed
 
     public float viewRadius = 15;                   //  Radius of the enemy view
     public float viewAngle = 90;                    //  Angle of the enemy view
@@ -18,8 +21,8 @@ public class AIController : MonoBehaviour
     public float meshResolution = 1.0f;             //  How many rays will cast per degree
     public int edgeIterations = 4;                  //  Number of iterations to get a better performance of the mesh filter when the raycast hit an obstacule
     public float edgeDistance = 0.5f;               //  Max distance to calcule the a minumun and a maximum raycast when hits something
+    public GameObject currentcatch;
     public float timeRemaining = 5.0f;
-
 
     public Transform[] waypoints;                   //  All the waypoints where the enemy patrols
     int m_CurrentWaypointIndex;                     //  Current waypoint where the enemy is going to
@@ -33,7 +36,7 @@ public class AIController : MonoBehaviour
     bool m_PlayerNear;                              //  If the player is near, state of hearing
     bool m_IsPatrol;                                //  If the enemy is patrol, state of patroling
     bool m_CaughtPlayer;                            //  if the enemy has caught the player
-    bool m_freezeEnemy;                            //  if the enemy has caught the player
+    bool m_freezeEnemy;                            //  if the enemy has been forzen by the playe
     Animator animator;
 
     void Start()
@@ -53,9 +56,7 @@ public class AIController : MonoBehaviour
         navMeshAgent.isStopped = false;
         navMeshAgent.speed = speedWalk;             //  Set the navemesh speed with the normal speed of the enemy
         navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);    //  Set the destination to the first waypoint
-        animator = GetComponent<Animator>();
-        animator.SetBool("idle", true);
-        animator.SetBool("walking", false);
+        OnAnimatorWalk();
     }
 
     private void Update()
@@ -64,9 +65,8 @@ public class AIController : MonoBehaviour
 
         if (m_freezeEnemy)
         {
-            animator = GetComponent<Animator>();
-            animator.SetBool("idle", true);
-            animator.SetBool("walking", false);
+            OnAnimatorStand();
+            Move(speedStand);
             if (timeRemaining > 0)
             {
                 timeRemaining -= Time.deltaTime;
@@ -89,21 +89,48 @@ public class AIController : MonoBehaviour
 
     }
 
+    private void OnTriggerEnter(Collider col)
+    {
+
+        if ((col.gameObject.tag == "Player1") || (col.gameObject.tag == "Player2"))
+        {
+            m_CaughtPlayer = true;
+            currentcatch = col.gameObject;
+            foreach (Transform animationLoc in currentcatch.transform)
+            {
+                if (animationLoc.name == "PolyArtWizardStandardMat" || animationLoc.name == "PolyArtWizardMaskTintMat")
+                {
+                    //animationLoc.gameObject.GetComponent<Animator>().SetBool("isDizzy", true);
+                    animationLoc.gameObject.GetComponent<Animator>().SetTrigger("isDizzy");
+                }
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider col)
+    {
+        m_CaughtPlayer = false;
+    }
+
     private void Chasing()
     {
         //  The enemy is chasing the player
         m_PlayerNear = false;                       //  Set false that hte player is near beacause the enemy already sees the player
         playerLastPosition = Vector3.zero;          //  Reset the player near position
 
-        animator = GetComponent<Animator>();
-        animator.SetBool("walking", true);
-        animator.SetBool("idle", false);
+        OnAnimatorRun();
 
         if (!m_CaughtPlayer)
         {
             Move(speedRun);
             navMeshAgent.SetDestination(m_PlayerPosition);          //  set the destination of the enemy to the player location
         }
+        else
+        {
+            CaughtPlayer();
+            m_CaughtPlayer = false;
+        }
+
         if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)    //  Control if the enemy arrive to the player location
         {
             if (m_WaitTime <= 0 && !m_CaughtPlayer && Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) >= 6f)
@@ -128,9 +155,7 @@ public class AIController : MonoBehaviour
 
     private void Patroling()
     {
-        animator = GetComponent<Animator>();
-        animator.SetBool("idle", true);
-        animator.SetBool("walking", false);
+        OnAnimatorWalk();
         if (m_PlayerNear)
         {
             //  Check if the enemy detect near the player, so the enemy will move to that position
@@ -169,9 +194,26 @@ public class AIController : MonoBehaviour
         }
     }
 
-    private void OnAnimatorMove()
+    private void OnAnimatorStand()
     {
-        //animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
+        animator.SetBool("idle", true);
+        animator.SetBool("walking", false);
+        animator.SetBool("running", false);
+    }
+    private void OnAnimatorWalk()
+    {
+        animator = GetComponent<Animator>();
+        animator.SetBool("walking", true);
+        animator.SetBool("idle", false);
+        animator.SetBool("running", false);
+    }
+    private void OnAnimatorRun()
+    {
+        animator = GetComponent<Animator>();
+        animator.SetBool("running", true);
+        animator.SetBool("walking", false);
+        animator.SetBool("idle", false);
     }
 
     public void NextPoint()
@@ -194,7 +236,16 @@ public class AIController : MonoBehaviour
 
     void CaughtPlayer()
     {
-        m_CaughtPlayer = true;
+        print("catch!!");
+        //m_CaughtPlayer = true;
+        if(currentcatch.tag == "Player2")
+        {
+            FindObjectOfType<healthsys2>().getDamage = true;
+        }
+        else if(currentcatch.tag == "Player1")
+        {
+            FindObjectOfType<healthsys>().getDamage = true;
+        }
     }
 
     void LookingPlayer(Vector3 player)
@@ -233,9 +284,6 @@ public class AIController : MonoBehaviour
                 {
                     m_playerInRange = true;             //  The player has been seeing by the enemy and then the nemy starts to chasing the player
                     m_IsPatrol = false;                 //  Change the state to chasing the player
-                    //animator = GetComponent<Animator>();
-                    //animator.SetBool("walking", true);
-                    //animator.SetBool("idle", false);
                 }
                 else
                 {
@@ -265,9 +313,7 @@ public class AIController : MonoBehaviour
 
     public void animationFreeze(Animator animator)
     {
-        animator = GetComponent<Animator>();
-        animator.SetBool("walking", false);
-        animator.SetBool("idle", true);
+        OnAnimatorStand();
         m_freezeEnemy = true;
         print("freeze");
 
