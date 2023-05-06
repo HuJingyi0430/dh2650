@@ -35,8 +35,10 @@ public class animationStateController_Player2 : MonoBehaviour
             if (Input.GetButtonDown("Jump")) animator.SetBool("isJumping", true);
             else animator.SetBool("isJumping", false);
         }
-        
+    }
 
-        
+    public void player2Dead()
+    {
+        animator.SetTrigger("isDead");
     }
 }

@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     Transform feet;
 
     Rigidbody rigid;
+    Animator animator;
 
     LayerMask mask;
 
@@ -23,6 +24,14 @@ public class PlayerController : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
 
         mask = LayerMask.GetMask("land");
+
+        foreach (Transform animationLoc in gameObject.transform)
+        {
+            if (animationLoc.name == "PolyArtWizardStandardMat" || animationLoc.name == "PolyArtWizardMaskTintMat")
+            {
+                animator = animationLoc.gameObject.GetComponent<Animator>();
+            }
+        }
     }
 
     void Update() {
@@ -44,6 +53,15 @@ public class PlayerController : MonoBehaviour
         cameraForwardDir = new Vector3(cameraForwardDir.x, 0, cameraForwardDir.z).normalized;
         cameraSideDir = new Vector3(cameraSideDir.x, 0, cameraSideDir.z).normalized;
 
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Dizzy") || animator.GetCurrentAnimatorStateInfo(0).IsName("Die") || animator.GetCurrentAnimatorStateInfo(0).IsName("DieRecovery"))
+        {
+            print("get dizzy state");
+            speed = 0;
+        }
+        else
+        {
+            speed = 10;
+        }
         if (horizontal != 0 || vertical != 0) {
             float currentVelocityY = rigid.velocity.y;
             rigid.velocity = (cameraForwardDir * vertical * speed) + (cameraSideDir * horizontal * speed);

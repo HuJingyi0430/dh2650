@@ -56,4 +56,9 @@ public class animationStateController_Player1 : MonoBehaviour
     {
         grabbing = false;
     }
+
+    public void player1Dead()
+    {
+        animator.SetTrigger("isDead");
+    }
 }
