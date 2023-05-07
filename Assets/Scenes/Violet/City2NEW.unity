@@ -17760,7 +17760,8 @@ MonoBehaviour:
   edgeDistance: 0.5
   currentcatch: {fileID: 0}
   timeRemaining: 5
-  waypoints: []
+  waypoints:
+  - {fileID: 1540894544}
 --- !u!195 &748558193
 NavMeshAgent:
   m_ObjectHideFlags: 0
