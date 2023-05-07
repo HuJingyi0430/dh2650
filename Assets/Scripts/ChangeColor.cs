@@ -25,6 +25,7 @@ public class ChangeColor : MonoBehaviour
         foreach (Transform area in environment.transform) // Child of Environmnet. E.g. area = PuzzleArea1 
         {
             if (area.name == "PuzzleArea2") area.Find("Area Light").GetComponent<Light>().enabled = false;
+            //area.Find("Area Light").GetComponent<Light>().enabled = false;
             foreach (Transform child in area.transform) // Grandchild of Environmnet. E.g. child = SquareOfForest 
             {
                 foreach (Transform grandchild in child.transform) // Child of grandchild of environment. E.g. grandchild = Tree_Apple 
@@ -41,7 +42,8 @@ public class ChangeColor : MonoBehaviour
     public void ColorPuzzle(string name_of_puzzle)
     {
         Transform puzzle = environment.transform.Find(name_of_puzzle);
-        if (puzzle.name == "PuzzleArea2") puzzle.Find("Area Light").GetComponent<Light>().enabled = true;
+        //if (puzzle.name == "PuzzleArea3") puzzle.Find("Area Light").GetComponent<Light>().enabled = true;
+        puzzle.Find("Area Light").GetComponent<Light>().enabled = true;
         foreach (Transform child in puzzle.transform)
         {
             foreach (Transform grandchild in child.transform)

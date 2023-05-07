@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Numerics;
+//using System.Numerics;
 using UnityEngine;
 
-public class Puzzle2 : MonoBehaviour
+public class Puzzle3 : MonoBehaviour
 {
     // Start is called before the first frame update
     bool triggered;
@@ -24,7 +24,9 @@ public class Puzzle2 : MonoBehaviour
             {
                 FindObjectOfType<FadeToGray>().DoTheColor(this.gameObject.GetComponent<Renderer>());
                 FindObjectOfType<FadeToGray>().DoTheColor(collider.gameObject.GetComponent<Renderer>());
-                FindObjectOfType<ChangeColor>().ColorPuzzle("PuzzleArea1");
+                collider.gameObject.GetComponent<Rigidbody>().mass = 100;
+                //this.gameObject.GetComponent<Collider>().isTrigger = false;
+                //FindObjectOfType<ChangeColor>().ColorPuzzle("PuzzleArea3");
             }
             else {
                 FindObjectOfType<FadeToGray>().DoTheFade(this.gameObject.GetComponent<Renderer>());
@@ -74,8 +76,7 @@ public class Puzzle2 : MonoBehaviour
 
      private bool checkCrossCorrect(float xnumber)
     {
-        print(xnumber);
-  
+        //print(xnumber);
         bool result;
         result = ((xnumber < 360) && (350 < xnumber)) || ((xnumber < 10) && (10 < xnumber));
         return result;
