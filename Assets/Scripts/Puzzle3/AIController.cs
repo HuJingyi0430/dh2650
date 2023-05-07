@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 //using System.Numerics;
-//using System.Numerics;
 using UnityEngine;
 using UnityEngine.AI;
 public class AIController : MonoBehaviour
@@ -37,6 +36,7 @@ public class AIController : MonoBehaviour
     bool m_IsPatrol;                                //  If the enemy is patrol, state of patroling
     bool m_CaughtPlayer;                            //  if the enemy has caught the player
     bool m_freezeEnemy;                            //  if the enemy has been forzen by the playe
+    bool canBeCaught;
     Animator animator;
 
     void Start()
@@ -47,6 +47,7 @@ public class AIController : MonoBehaviour
         m_playerInRange = false;
         m_PlayerNear = false;
         m_freezeEnemy = false;
+        canBeCaught = false;
         m_WaitTime = startWaitTime;                 //  Set the wait time variable that will change
         m_TimeToRotate = timeToRotate;
 
@@ -91,24 +92,52 @@ public class AIController : MonoBehaviour
 
     private void OnTriggerEnter(Collider col)
     {
+        //print(col.gameObject.name);
         if ((col.gameObject.tag == "Player1") || (col.gameObject.tag == "Player2"))
         {
+            //print(col.gameObject.name);
             if (col.gameObject.name == "Sphere")
             {
                 currentcatch = GameObject.Find("Player2");
+                //currentcatch = col.gameObject;
                 print(currentcatch.name);
             }
             else
             {
                 currentcatch = col.gameObject;
             }
-            m_CaughtPlayer = true;
+            canBeCaught = true;
+            //StartCoroutine(WaitForFunction());
+            //m_CaughtPlayer = true;
+            /*
             foreach (Transform animationLoc in currentcatch.transform)
             {
                 if (animationLoc.name == "PolyArtWizardStandardMat" || animationLoc.name == "PolyArtWizardMaskTintMat")
                 {
                     //animationLoc.gameObject.GetComponent<Animator>().SetBool("isDizzy", true);
                     animationLoc.gameObject.GetComponent<Animator>().SetTrigger("isDizzy");
+                }
+            }
+            */
+        }
+    }
+    private void OnTriggerStay(Collider col)
+    {
+        //print("here!!!!!!!!!!!!!!");
+        foreach (Transform animationLoc in currentcatch.transform)
+        {
+            if (animationLoc.name == "PolyArtWizardStandardMat" || animationLoc.name == "PolyArtWizardMaskTintMat")
+            {
+                //StartCoroutine(WaitForFunction());
+                //if (animationLoc.gameObject.GetComponent<Animator>().GetBool("isDizzy") == false)
+                //{
+                //    canBeCaught = true;
+                //}
+                if ((Vector3.Distance(this.gameObject.transform.position, currentcatch.transform.position) < 2.5f) && canBeCaught && (animationLoc.gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Dizzy") == false) && (animationLoc.gameObject.GetComponent<Animator>().GetBool("isDizzy") == false))
+                {
+                    m_CaughtPlayer = true;
+                    canBeCaught = false;
+                    print("here!!");
                 }
             }
         }
@@ -118,6 +147,25 @@ public class AIController : MonoBehaviour
     {
         m_CaughtPlayer = false;
     }
+
+    /*
+    IEnumerator WaitForFunction()
+    {
+        yield return new WaitForSeconds(1.5f);
+        foreach (Transform animationLoc in currentcatch.transform)
+        {
+            if (animationLoc.name == "PolyArtWizardStandardMat" || animationLoc.name == "PolyArtWizardMaskTintMat")
+            {
+                if ((Vector3.Distance(this.gameObject.transform.position, currentcatch.transform.position) < 2.5f) && (animationLoc.gameObject.GetComponent<Animator>().GetBool("isDizzy") == false))
+                {
+                    m_CaughtPlayer = true;
+                    print("here!!");
+                }
+            }
+        }
+    }
+    */
+
 
     private void Chasing()
     {
@@ -245,15 +293,27 @@ public class AIController : MonoBehaviour
     {
         print("catch!!");
         //m_CaughtPlayer = true;
-        if(currentcatch.tag == "Player2")
+        //print(currentcatch.name);
+
+        foreach (Transform animationLoc in currentcatch.transform)
+        {
+            if (animationLoc.name == "PolyArtWizardStandardMat" || animationLoc.name == "PolyArtWizardMaskTintMat")
+            {
+                //animationLoc.gameObject.GetComponent<Animator>().SetBool("isDizzy", true);
+                animationLoc.gameObject.GetComponent<Animator>().SetTrigger("isDizzy");
+                canBeCaught = true;
+            }
+        }
+
+        if (currentcatch.tag == "Player2" && currentcatch.name != "Sphere")
         {
             FindObjectOfType<healthsys2>().getDamage = true;
         }
-        else if(currentcatch.tag == "Player1")
+        else if (currentcatch.tag == "Player1")
         {
             FindObjectOfType<healthsys>().getDamage = true;
         }
-    }
+}
 
     void LookingPlayer(Vector3 player)
     {

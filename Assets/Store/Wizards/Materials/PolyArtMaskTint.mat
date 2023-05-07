@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PolyArtMaskTint
-  m_Shader: {fileID: 4800000, guid: b3b027031f09c4b4c83228ddb863368b, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: cd47926ca765f134f864ae3e6ff0edec, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _EMISSION

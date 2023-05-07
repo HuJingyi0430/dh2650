@@ -27,8 +27,8 @@ public class Robot2 : MonoBehaviour
             anim.SetBool("isWalking", true);
         }
         if (rollband) {
-            transform.position += new Vector3(1, 0, 0) * Time.deltaTime;
-            if (transform.position.x > 16) transform.position = new Vector3(-16, transform.position.y, transform.position.z);
+            transform.localPosition += new Vector3(1, 0, 0) * Time.deltaTime;
+            if (transform.localPosition.x > 16) transform.localPosition = new Vector3(-16, transform.localPosition.y, transform.localPosition.z);
         }
         else
         {
