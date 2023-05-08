@@ -35,8 +35,10 @@ public class Puzzle3 : MonoBehaviour
         }
         else
         {
-            FindObjectOfType<FadeToGray>().DoTheFade(this.gameObject.GetComponent<Renderer>());
-            FindObjectOfType<FadeToGray>().DoTheFade(collider.gameObject.GetComponent<Renderer>());
+            if(collider != null) { 
+                FindObjectOfType<FadeToGray>().DoTheFade(this.gameObject.GetComponent<Renderer>());
+                FindObjectOfType<FadeToGray>().DoTheFade(collider.gameObject.GetComponent<Renderer>());
+            }
         }
 
     }
