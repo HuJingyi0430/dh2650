@@ -8,11 +8,11 @@ public class MoveAbility : MonoBehaviour
     private bool colliding;
     private Collision collated_object;
     Vector3 distance;
-    animationStateController_Player1 animation;
+    animationStateController animation;
     // Start is called before the first frame update
     void Start()
     {
-        animation = FindObjectOfType<animationStateController_Player1>();
+        animation = FindObjectOfType<animationStateController>();
         m_Rigidbody = GetComponent<Rigidbody>();
         colliding = false;
         collated_object = null;

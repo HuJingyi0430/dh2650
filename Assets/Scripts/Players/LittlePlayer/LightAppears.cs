@@ -16,7 +16,8 @@ public class LightAppears : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey("f") == true) {
+        if (Input.GetButton("UseWand") || Input.GetButton("ReverseGravity") || Input.GetButton("NormalGravity"))
+        {
             lamp.enabled = true;
             mesh.enabled = true;
         }

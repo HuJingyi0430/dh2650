@@ -10,11 +10,11 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody rigid;
     Animator animator;
-
     LayerMask mask;
 
     float speed = 10;
     float jumpHeight = 10;
+
 
     void Start() {
         tran = GetComponent<Transform>();
@@ -23,8 +23,8 @@ public class PlayerController : MonoBehaviour
 
         rigid = GetComponent<Rigidbody>();
 
-        mask = LayerMask.GetMask("land");
-
+        mask = LayerMask.GetMask("Ground");
+        
         foreach (Transform animationLoc in gameObject.transform)
         {
             if (animationLoc.name == "PolyArtWizardStandardMat" || animationLoc.name == "PolyArtWizardMaskTintMat")
@@ -38,13 +38,15 @@ public class PlayerController : MonoBehaviour
 
         float horizontal = 0;
         float vertical = 0;
-        if (gameObject.tag == "Player1") {
-            horizontal = Input.GetAxis("Horizontal2"); // HorizontalJoyLeft
-            vertical = Input.GetAxis("Vertical2"); //VerticalJoyLeft
+        if (this.CompareTag("Player1")) {
+            horizontal = Input.GetAxis("HorizontalJoyLeft"); // HorizontalJoyLeft
+            vertical = Input.GetAxis("VerticalJoyLeft"); //VerticalJoyLeft
+            if (Input.GetButtonDown("JumpJoy")) Debug.Log("PLAYER 1 IS JUMPING");
         }
-        else if (gameObject.tag == "Player2") {
-            horizontal = Input.GetAxis("Horizontal");
-            vertical = Input.GetAxis("Vertical");
+        else if (this.CompareTag("Player2")) {
+            horizontal = Input.GetAxis("HorizontalJoy2Left");
+            vertical = Input.GetAxis("VerticalJoy2Left");
+            if (Input.GetButtonDown("JumpJoy2")) Debug.Log("PLAYER 2 IS JUMPING");
         }
 
         Vector3 cameraForwardDir = cameraTran.forward;
@@ -53,6 +55,7 @@ public class PlayerController : MonoBehaviour
         cameraForwardDir = new Vector3(cameraForwardDir.x, 0, cameraForwardDir.z).normalized;
         cameraSideDir = new Vector3(cameraSideDir.x, 0, cameraSideDir.z).normalized;
 
+        /*
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Dizzy") || animator.GetCurrentAnimatorStateInfo(0).IsName("Die") || animator.GetCurrentAnimatorStateInfo(0).IsName("DieRecovery"))
         {
             print("get dizzy state");
@@ -61,7 +64,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             speed = 10;
-        }
+        }*/
         if (horizontal != 0 || vertical != 0) {
             float currentVelocityY = rigid.velocity.y;
             rigid.velocity = (cameraForwardDir * vertical * speed) + (cameraSideDir * horizontal * speed);
@@ -71,10 +74,13 @@ public class PlayerController : MonoBehaviour
         bool grounded = Physics.Raycast(feet.position, Vector3.down, 0.5f, mask);
         bool jump = false;
         if (gameObject.tag == "Player1") jump = Input.GetButtonDown("JumpJoy");
-        else if (gameObject.tag == "Player2") jump = Input.GetButtonDown("Jump");
-        if (grounded && jump) {
-            rigid.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
+        else if (gameObject.tag == "Player2") jump = Input.GetButtonDown("JumpJoy2");
+        if (!grounded) animator.SetBool("isJumping", false);
+        if (jump && grounded) {
+            animator.SetBool("isJumping", true);
+            rigid.AddForce(Vector3.up * jumpHeight*0.8f, ForceMode.Impulse);
             print("jump pressed");
+
         } 
     }
 }

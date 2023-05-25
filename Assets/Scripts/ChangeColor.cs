@@ -23,14 +23,7 @@ public class ChangeColor : MonoBehaviour
         }
 
         foreach (Transform area in environment.transform) // Child of Environmnet. E.g. area = PuzzleArea1 
-        {
-            if (area.name == "PuzzleArea2") area.Find("Area Light").GetComponent<Light>().enabled = false;
-            if (area.name == "PuzzleArea1")
-            {
-                area.Find("Area Light").GetComponent<Light>().enabled = false;
-                area.Find("Area Light2").GetComponent<Light>().enabled = false;
-                area.Find("Area Light3").GetComponent<Light>().enabled = false;
-            }
+        { 
             //area.Find("Area Light").GetComponent<Light>().enabled = false;
             foreach (Transform child in area.transform) // Grandchild of Environmnet. E.g. child = SquareOfForest 
             {
@@ -49,12 +42,6 @@ public class ChangeColor : MonoBehaviour
     {
         Transform puzzle = environment.transform.Find(name_of_puzzle);
         //if (puzzle.name == "PuzzleArea3") puzzle.Find("Area Light").GetComponent<Light>().enabled = true;
-        puzzle.Find("Area Light").GetComponent<Light>().enabled = true;
-        if (puzzle.name == "PuzzleArea1")
-        {
-            puzzle.Find("Area Light2").GetComponent<Light>().enabled = true;
-            puzzle.Find("Area Light3").GetComponent<Light>().enabled = true;
-        }
         foreach (Transform child in puzzle.transform)
         {
             foreach (Transform grandchild in child.transform)
@@ -76,5 +63,6 @@ public class ChangeColor : MonoBehaviour
         if (Input.GetKey("1")) ColorPuzzle("PuzzleArea1");
         if (Input.GetKey("2")) ColorPuzzle("PuzzleArea2");
         if (Input.GetKey("3")) ColorPuzzle("PuzzleArea3");
+        if (Input.GetKey("4")) FindObjectOfType<Robot3>().KillRobot();
     }
 }

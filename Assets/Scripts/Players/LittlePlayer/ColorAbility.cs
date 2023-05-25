@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class ColorAbility : MonoBehaviour
 {
+    public bool isInvincible;
     private bool triggered;
     private Collider collided;
     private bool startedStaffing;
     private bool freezeEnemy;
-    private bool doMagicPuzzle2;
+    private bool doMagicPV1;
+    private bool doMagicPV2;
+    float timer;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,46 +19,91 @@ public class ColorAbility : MonoBehaviour
         collided = null;
         startedStaffing = false;
         freezeEnemy = false;
-        doMagicPuzzle2 = false;
+        doMagicPV1 = false;
+        doMagicPV2 = false;
+        isInvincible = false;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (isInvincible == true)
+        {
+            timer += Time.deltaTime;
+            if (timer > 4)
+            {
+                timer = 0;
+                isInvincible = false;
+            }
+
+        }
         if (triggered)
         {
-            if (Input.GetKey("f") && !startedStaffing ) { 
-                FindObjectOfType<FadeToGray>().DoTheColor(collided.gameObject.GetComponent<Renderer>());
-                startedStaffing = true;
-            }
-            if (Input.GetKey("f") && !doMagicPuzzle2)
+            if (Input.GetButtonDown("UseWand"))
             {
-                Transform transformed;
-                transformed = collided.gameObject.GetComponent<Transform>();
-                transformed.Rotate(90, 0, 0);
-                doMagicPuzzle2 = true;
+                if (collided.CompareTag("Generator"))
+                {
+                    print("FOUND THE GENERATOR");
+                    //collided.GetComponent<Renderer>().material.color = new Color(1, 1, 0);
+                    GameObject col_parent = collided.transform.parent.gameObject;
+                    foreach (Transform child in col_parent.transform)
+                    {
+                        if (child.gameObject.name == "Window" || child.gameObject.name == "Particles") Destroy(child.gameObject);
+                        else if (child.gameObject.name != "Light" && child.gameObject.name != "Boy0") child.GetComponent<Renderer>().material.color = new Color(0, 1, 0);
+                    }
+                    if (collided.name == "Source2")
+                    {
+                        col_parent.GetComponentInChildren<BoyRunning>().YouAreFree();
+                        FindObjectOfType<ChangeColor>().ColorPuzzle("PuzzleArea3");
+                    }
+                    col_parent.GetComponentInChildren<Light>().enabled = false;
+                }
+                if (!startedStaffing)
+                {
+                    FindObjectOfType<FadeToGray>().DoTheColor(collided.gameObject.GetComponent<Renderer>());
+                    startedStaffing = true;
+                }
+                if (doMagicPV1 && FindObjectOfType<Puzzleviol1>().isReady)
+                {
+                    FindObjectOfType<Puzzleviol1>().putRoofCorrect();
+                    doMagicPV1 = false;
+                }
+                if (doMagicPV2 && FindObjectOfType<Puzzleviol2>().isReady)
+                {
+                    FindObjectOfType<Puzzleviol2>().putRoofCorrect();
+                    doMagicPV1 = false;
+                }
+                if (freezeEnemy)
+                {
+                    FindObjectOfType<AIController>().animationFreeze(collided.gameObject.GetComponent<Animator>());
+                    freezeEnemy = false;
+                }
+                }else{
+                    if (startedStaffing)
+                    {
+                        FindObjectOfType<FadeToGray>().DoTheFade(collided.gameObject.GetComponent<Renderer>());
+                        startedStaffing = false;
+                    }
+                    if (!doMagicPV1)
+                    {
+                        doMagicPV1 = false;
+                    }
+                    if (!doMagicPV2)
+                    {
+                        doMagicPV2 = false;
+                    }
+                }
             }
-            if (Input.GetKey("f") && freezeEnemy)
-            {
-                FindObjectOfType<AIController>().animationFreeze(collided.gameObject.GetComponent<Animator>());
-                freezeEnemy = false;
-            }
-
-            if (!Input.GetKey("f") && startedStaffing) { 
-                FindObjectOfType<FadeToGray>().DoTheFade(collided.gameObject.GetComponent<Renderer>());
-                startedStaffing = false;
-            }
-
-            if (!Input.GetKey("f") && doMagicPuzzle2)
-            {
-                doMagicPuzzle2 = false;
-            }
-        }
     }
 
     private void OnTriggerEnter(Collider col)
     {
-        if(col.gameObject.name == "Box" || col.gameObject.name == "RedPlane")
+        if (col.gameObject.tag == "Generator")
+        {
+            triggered = true;
+            collided = col;
+        }
+        if (col.gameObject.name == "Box" || col.gameObject.name == "RedPlane")
         {
             triggered = true;
             collided = col;
@@ -68,11 +116,17 @@ public class ColorAbility : MonoBehaviour
             freezeEnemy = true;
         }
 
-
-        if (col.gameObject.name == "top1" || col.gameObject.name == "top2" || col.gameObject.name == "top3")
+        if (col.gameObject.name == "coffin")
         {
             triggered = true;
             collided = col;
+            doMagicPV1 = true;
+        }
+        if (col.gameObject.name == "coffin2")
+        {
+            triggered = true;
+            collided = col;
+            doMagicPV2 = true;
         }
     }
     private void OnTriggerExit(Collider col)
@@ -91,7 +145,7 @@ public class ColorAbility : MonoBehaviour
             freezeEnemy = false;
         }
 
-        if (col.gameObject.name == "top1"|| col.gameObject.name == "top2" || col.gameObject.name == "top3")
+        if (col.gameObject.name == "coffin" || col.gameObject.name == "coffin2")
         {
             triggered = false;
             collided = null;
