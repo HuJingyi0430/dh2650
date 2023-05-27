@@ -8,11 +8,11 @@ public class Puzzle3 : MonoBehaviour
 {
     // Start is called before the first frame update
     bool triggered;
-    Collider collider;
+    Collider the_collider;
     void Start()
     {
         triggered = false;
-        collider = null;
+        the_collider = null;
     }
 
     // Update is called once per frame
@@ -20,24 +20,24 @@ public class Puzzle3 : MonoBehaviour
     {
         if (triggered)
         {
-            if (checkCrossCorrect(collider.gameObject.transform.eulerAngles.x))
+            if (checkCrossCorrect(the_collider.gameObject.transform.eulerAngles.x))
             {
                 FindObjectOfType<FadeToGray>().DoTheColor(this.gameObject.GetComponent<Renderer>());
-                FindObjectOfType<FadeToGray>().DoTheColor(collider.gameObject.GetComponent<Renderer>());
-                collider.gameObject.GetComponent<Rigidbody>().mass = 100;
+                FindObjectOfType<FadeToGray>().DoTheColor(the_collider.gameObject.GetComponent<Renderer>());
+                the_collider.gameObject.GetComponent<Rigidbody>().mass = 100;
                 //this.gameObject.GetComponent<Collider>().isTrigger = false;
                 //FindObjectOfType<ChangeColor>().ColorPuzzle("PuzzleArea3");
             }
             else {
                 FindObjectOfType<FadeToGray>().DoTheFade(this.gameObject.GetComponent<Renderer>());
-                FindObjectOfType<FadeToGray>().DoTheFade(collider.gameObject.GetComponent<Renderer>());
+                FindObjectOfType<FadeToGray>().DoTheFade(the_collider.gameObject.GetComponent<Renderer>());
             }
         }
         else
         {
-            if(collider != null) { 
+            if(the_collider != null) { 
                 FindObjectOfType<FadeToGray>().DoTheFade(this.gameObject.GetComponent<Renderer>());
-                FindObjectOfType<FadeToGray>().DoTheFade(collider.gameObject.GetComponent<Renderer>());
+                FindObjectOfType<FadeToGray>().DoTheFade(the_collider.gameObject.GetComponent<Renderer>());
             }
         }
 
@@ -48,7 +48,7 @@ public class Puzzle3 : MonoBehaviour
         if (col.gameObject.tag == this.gameObject.tag)
         {
                 print(col.gameObject.transform.localRotation.x);
-                collider = col;
+            the_collider = col;
                 triggered = true;
                 //FindObjectOfType<FadeToGray>().DoTheColor(collider.gameObject.GetComponent<Renderer>());
         }

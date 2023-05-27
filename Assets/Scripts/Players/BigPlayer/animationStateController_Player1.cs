@@ -5,11 +5,11 @@ using UnityEngine;
 public class animationStateController_Player1 : MonoBehaviour
 {
     Animator animator;
-    bool grabbing;
+    PushAbility pushing;
     // Start is called before the first frame update
     void Start()
     {
-        grabbing = false;
+        pushing = FindObjectOfType<PushAbility>();
         animator = GetComponent<Animator>();
     }
 
@@ -26,7 +26,7 @@ public class animationStateController_Player1 : MonoBehaviour
                 animator.SetBool("isJumping", true);
 
             }
-            else if (grabbing)
+            else if (pushing.GetIsGrabbing())
             {
                 animator.SetBool("isWalking", false);
                 animator.SetBool("isGrabbing", true);
@@ -40,21 +40,11 @@ public class animationStateController_Player1 : MonoBehaviour
         }
         else animator.SetBool("isWalking", false);
         
-        if (grabbing) animator.SetBool("isGrabbing", true);
+        if (pushing.GetIsGrabbing()) animator.SetBool("isGrabbing", true);
         else animator.SetBool("isGrabbing", false);
 
         if (Input.GetButtonDown("JumpJoy")) animator.SetBool("isJumping", true);
         else animator.SetBool("isJumping", false);
-    }
-
-    public void Grab()
-    {
-        grabbing = true;
-        Debug.Log("IS GRABBING");
-    }
-    public void StopGrab()
-    {
-        grabbing = false;
     }
 
     public void player1Dead()

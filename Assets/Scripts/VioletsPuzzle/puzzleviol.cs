@@ -20,8 +20,8 @@ public class puzzleviol : MonoBehaviour
     {
         if (completesub1 && completesub2)
         {
-            FindObjectOfType<ChangeColor>().ColorPuzzle("PuzzleArea1");
-            FindObjectOfType<Robot3>().KillRobot();
+            FindObjectOfType<ChangeColor>().ColorPuzzle("PuzzleArea2");
+            //FindObjectOfType<Robot3>().KillRobot();
         }
     }
 }

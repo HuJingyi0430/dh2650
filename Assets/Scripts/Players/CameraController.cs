@@ -10,8 +10,8 @@ public class CameraController : MonoBehaviour
     void Start() {
         tran = GetComponent<Transform>();
 
-        if (gameObject.tag == "Player1") rotationSpeed = 1.5f;
-        else if (gameObject.tag == "Player2") rotationSpeed = 1.5f;
+        if (gameObject.tag == "Player1") rotationSpeed = 2.5f;
+        else if (gameObject.tag == "Player2") rotationSpeed = 2.5f;
     }
 
     void Update() {
@@ -24,7 +24,7 @@ public class CameraController : MonoBehaviour
         }
         else if (gameObject.tag == "Player2") {
             horizontal = Input.GetAxis("HorizontalJoy2Right");
-            vertical = -Input.GetAxis("VerticalJoy2Right");
+            vertical = Input.GetAxis("VerticalJoy2Right");
         }
 
         if (horizontal != 0 || vertical != 0) {

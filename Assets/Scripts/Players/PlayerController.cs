@@ -39,15 +39,17 @@ public class PlayerController : MonoBehaviour
         float horizontal = 0;
         float vertical = 0;
         if (this.CompareTag("Player1")) {
-            horizontal = Input.GetAxis("HorizontalJoyLeft"); // HorizontalJoyLeft
-            vertical = Input.GetAxis("VerticalJoyLeft"); //VerticalJoyLeft
+            horizontal = Input.GetAxisRaw("HorizontalJoyLeft"); // HorizontalJoyLeft
+            vertical = Input.GetAxisRaw("VerticalJoyLeft"); //VerticalJoyLeft
             if (Input.GetButtonDown("JumpJoy")) Debug.Log("PLAYER 1 IS JUMPING");
         }
         else if (this.CompareTag("Player2")) {
-            horizontal = Input.GetAxis("HorizontalJoy2Left");
-            vertical = Input.GetAxis("VerticalJoy2Left");
+            horizontal = Input.GetAxisRaw("HorizontalJoy2Left");
+            vertical = Input.GetAxisRaw("VerticalJoy2Left");
             if (Input.GetButtonDown("JumpJoy2")) Debug.Log("PLAYER 2 IS JUMPING");
         }
+
+        //print("Horizontal: " + horizontal + " Vertical: " + vertical);
 
         Vector3 cameraForwardDir = cameraTran.forward;
         Vector3 cameraSideDir = cameraTran.right;
@@ -65,11 +67,10 @@ public class PlayerController : MonoBehaviour
         {
             speed = 10;
         }*/
-        if (horizontal != 0 || vertical != 0) {
-            float currentVelocityY = rigid.velocity.y;
-            rigid.velocity = (cameraForwardDir * vertical * speed) + (cameraSideDir * horizontal * speed);
-            rigid.velocity = new Vector3(rigid.velocity.x, currentVelocityY, rigid.velocity.z);
-        }
+        float currentVelocityY = rigid.velocity.y;
+        rigid.velocity = (cameraForwardDir * vertical * speed) + (cameraSideDir * horizontal * speed);
+        rigid.velocity = new Vector3(rigid.velocity.x, currentVelocityY, rigid.velocity.z);
+        
 
         bool grounded = Physics.Raycast(feet.position, Vector3.down, 0.5f, mask);
         bool jump = false;

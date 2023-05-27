@@ -29,9 +29,11 @@ public class ChangeColor : MonoBehaviour
             {
                 foreach (Transform grandchild in child.transform) // Child of grandchild of environment. E.g. grandchild = Tree_Apple 
                 {
-                    foreach (Renderer m_ObjectRenderer in grandchild.GetComponents<Renderer>())
-                    {
-                        FindObjectOfType<FadeToGray>().DoTheFade(m_ObjectRenderer);
+                    if(grandchild.GetComponent<Renderer>() != null) { 
+                        foreach (Renderer m_ObjectRenderer in grandchild.GetComponents<Renderer>())
+                        {
+                            FindObjectOfType<FadeToGray>().DoTheFade(m_ObjectRenderer);
+                        }
                     }
                 }
             }
@@ -41,14 +43,17 @@ public class ChangeColor : MonoBehaviour
     public void ColorPuzzle(string name_of_puzzle)
     {
         Transform puzzle = environment.transform.Find(name_of_puzzle);
-        //if (puzzle.name == "PuzzleArea3") puzzle.Find("Area Light").GetComponent<Light>().enabled = true;
+        if (puzzle.name == "PuzzleArea1" || puzzle.name == "PuzzleArea2") puzzle.Find("Spot Light").GetComponent<Light>().enabled = false;
         foreach (Transform child in puzzle.transform)
         {
             foreach (Transform grandchild in child.transform)
             {
                 Renderer m_ObjectRenderer;
-                m_ObjectRenderer = grandchild.GetComponent<Renderer>();
-                FindObjectOfType<FadeToGray>().DoTheColor(m_ObjectRenderer);
+                if (grandchild.GetComponent<Renderer>() != null)
+                {
+                    m_ObjectRenderer = grandchild.GetComponent<Renderer>();
+                    FindObjectOfType<FadeToGray>().DoTheColor(m_ObjectRenderer);
+                }
             }
         }
     }

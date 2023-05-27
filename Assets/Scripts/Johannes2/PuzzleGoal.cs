@@ -8,15 +8,19 @@ public class PuzzleGoal : MonoBehaviour
 
     ColorPermanently colorPermanently;
 
+    SpriteRenderer renOfInstructions;
+
     void Start() {
         changeColor = GameObject.Find("Environment").GetComponent<ChangeColor>();
         colorPermanently = GetComponent<ColorPermanently>();
+        renOfInstructions = GameObject.Find("InstructionSprite").GetComponent<SpriteRenderer>();
     }
 
     void OnCollisionEnter(Collision col) {
         if (col.gameObject.name == "PushableCylinder") {
             colorPermanently.enabled = true;
-            changeColor.ColorPuzzle("PuzzleArea2");
+            renOfInstructions.enabled = false;
+            changeColor.ColorPuzzle("PuzzleArea1");
         }
     }
 }

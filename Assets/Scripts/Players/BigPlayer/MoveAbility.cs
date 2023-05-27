@@ -8,11 +8,11 @@ public class MoveAbility : MonoBehaviour
     private bool colliding;
     private Collision collated_object;
     Vector3 distance;
-    animationStateController animation;
+    animationStateController the_animation;
     // Start is called before the first frame update
     void Start()
     {
-        animation = FindObjectOfType<animationStateController>();
+        the_animation = FindObjectOfType<animationStateController>();
         m_Rigidbody = GetComponent<Rigidbody>();
         colliding = false;
         collated_object = null;
@@ -26,10 +26,10 @@ public class MoveAbility : MonoBehaviour
             if((collated_object.rigidbody.position-m_Rigidbody.position).magnitude <= (distance.magnitude + 0.2f))
             {
                 // if ( Input.GetButton("GrabJoy") && collated_object != null) collated_object.rigidbody.MovePosition(m_Rigidbody.position + (distance * 1.1f));
-                animation.Grab();
+                the_animation.Grab();
             } else { 
                 colliding = false;
-                animation.StopGrab();
+                the_animation.StopGrab();
             }
         }
     }

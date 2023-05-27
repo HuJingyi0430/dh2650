@@ -1,8 +1,38 @@
 fileFormatVersion: 2
 guid: bf9c5813f88254fae9138e03f6badf43
 ModelImporter:
-  serializedVersion: 21300
-  internalIDToNameTable: []
+  serializedVersion: 21202
+  internalIDToNameTable:
+  - first:
+      74: 176124856283420198
+    second: boy_damage_back
+  - first:
+      74: -6244162820616118425
+    second: boy_down_back
+  - first:
+      74: -2643653348545996280
+    second: boy_faint_back
+  - first:
+      74: -9023191137756942803
+    second: boy_jump_default
+  - first:
+      74: 5586232106117124210
+    second: boy_jump_fall
+  - first:
+      74: 721873703693862323
+    second: boy_jump_rise
+  - first:
+      74: -7421752106101122698
+    second: boy_move_run
+  - first:
+      74: -8126556200813264112
+    second: boy_move_walk
+  - first:
+      74: -776529127735926039
+    second: boy_standup_faint_back
+  - first:
+      74: 8365099728959231449
+    second: boy_idle0
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -104,7 +134,6 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
-  remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
   userData: 
   assetBundleName: 

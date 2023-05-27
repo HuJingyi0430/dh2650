@@ -9,13 +9,13 @@ public class Puzzleviol1 : MonoBehaviour
     private bool triggered;
     public bool magicDone;
     public bool isReady;
-    Collider collider;
+    Collider the_collider;
     void Start()
     {
         triggered = false;
         magicDone = false;
         isReady = false;
-        collider = null;
+        the_collider = null;
     }
 
     // Update is called once per frame
@@ -23,13 +23,13 @@ public class Puzzleviol1 : MonoBehaviour
     {
         if (triggered)
         {
-            checkRoofCorrect(collider);
+            checkRoofCorrect(the_collider);
         }
         else
         {
-            if(collider != null) { 
+            if(the_collider != null) { 
                 FindObjectOfType<FadeToGray>().DoTheFade(this.gameObject.GetComponent<Renderer>());
-                FindObjectOfType<FadeToGray>().DoTheFade(collider.gameObject.GetComponent<Renderer>());
+                FindObjectOfType<FadeToGray>().DoTheFade(the_collider.gameObject.GetComponent<Renderer>());
             }
         }
 
@@ -37,16 +37,16 @@ public class Puzzleviol1 : MonoBehaviour
         {
             isReady = false;
             FindObjectOfType<FadeToGray>().DoTheColor(this.gameObject.GetComponent<Renderer>());
-            FindObjectOfType<FadeToGray>().DoTheColor(collider.gameObject.GetComponent<Renderer>());
+            FindObjectOfType<FadeToGray>().DoTheColor(the_collider.gameObject.GetComponent<Renderer>());
             //print("do the color back pv1");
             FindObjectOfType<puzzleviol>().completesub1 = true;
         }
         else
         {
-            if (collider != null)
+            if (the_collider != null)
             {
                 FindObjectOfType<FadeToGray>().DoTheFade(this.gameObject.GetComponent<Renderer>());
-                FindObjectOfType<FadeToGray>().DoTheFade(collider.gameObject.GetComponent<Renderer>());
+                FindObjectOfType<FadeToGray>().DoTheFade(the_collider.gameObject.GetComponent<Renderer>());
             }
         }
 
@@ -56,7 +56,7 @@ public class Puzzleviol1 : MonoBehaviour
         if (collisionInfo.collider.gameObject.tag == this.gameObject.tag)
         {
             //print("colide");
-            collider = collisionInfo.collider;
+            the_collider = collisionInfo.collider;
             triggered = true;
             //FindObjectOfType<FadeToGray>().DoTheColor(collider.gameObject.GetComponent<Renderer>());
         }

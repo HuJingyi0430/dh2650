@@ -8,7 +8,7 @@ public class ActivateLab : MonoBehaviour
     bool tile1;
     bool tile2;
     Light tv;
-    Renderer renderer;
+    Renderer the_renderer;
     public GameObject cable;
     public bool active;
     // Start is called before the first frame update
@@ -20,7 +20,7 @@ public class ActivateLab : MonoBehaviour
         cable.GetComponent<Renderer>().material.SetFloat("_Blend", 1);
         tv = transform.Find("Spot Light").GetComponent<Light>();
         tv.enabled = false;
-        renderer = transform.Find("Window").GetComponent<Renderer>();
+        the_renderer = transform.Find("Window").GetComponent<Renderer>();
     }
 
     void ColorWindow()
@@ -28,13 +28,13 @@ public class ActivateLab : MonoBehaviour
         active = true;
         cable.GetComponent<Renderer>().material.SetFloat("_Blend", 0);
         tv.enabled = true;
-        renderer.material.color = new Color(0.5f, 0.6f, 0.6f, 0.7f);
+        the_renderer.material.color = new Color(0.5f, 0.6f, 0.6f, 0.7f);
         try {
             StartCoroutine(FindObjectOfType<RobotAudio>().RobotSuccess());
         }
         catch (Exception e)
         {
-            Debug.Log("Error!");
+            Debug.Log("Error!" + e);
         }
     }
 

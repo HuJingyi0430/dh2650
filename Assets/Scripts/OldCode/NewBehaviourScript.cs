@@ -2,6 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class NewBehaviourScript : MonoBehaviour
+{
+    public Rigidbody my_Rigidbody;
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        if(Input.GetKey("up") || Input.GetKey("down") || Input.GetKey("left") || Input.GetKey("right"))
+        {
+            Vector3 my_Input = new Vector3(Input.GetAxis("Vertical"), 0, Input.GetAxis("Horizontal"));
+            my_Rigidbody.MovePosition(transform.position + my_Input * Time.deltaTime * 5f);
+        }
+    }
+}
+
 /*public class NewBehaviourScript : MonoBehaviour
 {
     Transform tran;
@@ -53,28 +73,3 @@ using UnityEngine;
     }
 }
 */
-
-
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class NewBehaviourScript : MonoBehaviour
-{
-    public Rigidbody my_Rigidbody;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        if(Input.GetKey("up") || Input.GetKey("down") || Input.GetKey("left") || Input.GetKey("right"))
-        {
-            Vector3 my_Input = new Vector3(Input.GetAxis("Vertical"), 0, Input.GetAxis("Horizontal"));
-            my_Rigidbody.MovePosition(transform.position + my_Input * Time.deltaTime * 5f);
-        }
-    }
-}
